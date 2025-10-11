@@ -21,4 +21,4 @@ except Exception as e:
 
 # Select your database
 db = client['user']
-users_collection = db['users']
+users_collection = db['user']
