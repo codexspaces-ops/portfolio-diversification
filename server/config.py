@@ -20,4 +20,5 @@ except Exception as e:
     print("Connection failed:", e)
 
 # Select your database
-db = client['user']  # Replace 'mydatabase' with your DB name
+db = client['user']
+users_collection = db['users']
