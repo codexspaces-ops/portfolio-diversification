@@ -1,7 +1,7 @@
 from flask import Flask
-from server.modules.auth.login import login_bp
-from server.modules.auth.signup import signup_bp
-from server.config import users_collection
+from app.auth.login import login_bp
+from app.auth.signup import signup_bp
+from app.config import users_collection
 import secrets
 # Create a Flask instance
 app = Flask(__name__)
