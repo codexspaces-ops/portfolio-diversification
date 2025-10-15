@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import check_password_hash
+from datetime import datetime
 
 login_bp = Blueprint('login', __name__)
 
@@ -22,6 +23,11 @@ def login(users_collection):
 
         if user and check_password_hash(user['password'], password):
             session['user'] = user['email']
+            # Update last_login field
+            users_collection.update_one(
+                {"_id": user["_id"]},
+                {"$set": {"last_login": datetime.utcnow()}}
+            )
             flash("Login successful!", "success")
             return redirect(url_for('login.dashboard'))
         else:
