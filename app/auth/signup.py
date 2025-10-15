@@ -9,10 +9,12 @@ def signup(users_collection):
     if request.method == 'POST':
         if request.is_json:
             data = request.get_json()
+            full_name = data.get('full_name')
             username = data.get('username')
             email = data.get('email')
             password = data.get('password')
         else:
+            full_name = request.form.get('full_name')
             username = request.form.get('username')
             email = request.form.get('email')
             password = request.form.get('password')
@@ -49,6 +51,7 @@ def signup(users_collection):
         now = datetime.utcnow()
 
         user_doc = {
+            "full_name": full_name,
             "username": username,
             "email": email,
             "password": hashed_password,
@@ -67,3 +70,9 @@ def signup(users_collection):
             return redirect(url_for('login.login'))
 
     return render_template('signup.html')
+
+@signup_bp.route('/check_username', methods=['POST'])
+def check_username(users_collection):
+    username = request.json.get('username', '').strip()
+    exists = bool(username) and users_collection.find_one({"username": username}) is not None
+    return jsonify({"available": bool(username) and not exists})

@@ -41,4 +41,6 @@ def dashboard(users_collection):
     if 'user' not in session:
         flash("Please log in first.", "warning")
         return redirect(url_for('login.login'))
-    return f"Welcome {session['user']}!"
+    user = users_collection.find_one({"email": session['user']})
+    full_name = user.get("full_name", user.get("username", "User")) if user else "User"
+    return f"Welcome {full_name}!"

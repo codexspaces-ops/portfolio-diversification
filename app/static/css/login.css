@@ -16,6 +16,7 @@ body {
     width: 100%;
     margin: 2rem;
     position: relative;
+    overflow: hidden;
 }
 .toggle-btns {
     display: flex;
@@ -48,11 +49,14 @@ h2 {
 form {
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
-    margin-bottom: 1.5rem;
+    gap: 1rem; /* Increased gap for better spacing between fields */
+}
+.form-field {
+    display: flex;
+    flex-direction: column;
 }
 input {
-    padding: 0.7rem 1rem;
+    padding: 0.8rem 1rem; /* Slightly more padding */
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     font-size: 1rem;
@@ -75,6 +79,7 @@ button[type="submit"] {
     cursor: pointer;
     transition: background 0.2s, box-shadow 0.2s;
     box-shadow: 0 2px 8px rgba(253, 160, 133, 0.08);
+    margin-top: 0.5rem; /* Add space above the button */
 }
 button[type="submit"]:hover {
     background: linear-gradient(90deg, #fda085 0%, #f6d365 100%);
@@ -97,6 +102,50 @@ button[type="submit"]:hover {
 .danger { background: #ffeaea; color: #d8000c; }
 .success { background: #eaffea; color: #4f8a10; }
 .warning { background: #fffbe5; color: #9f6000; }
+
+.is-hidden { display: none; }
+
+.input-hint {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    font-size: 0.9em;
+    padding-left: 0.25rem;
+    transition: max-height 250ms ease-out, opacity 200ms ease-out, margin-top 250ms ease-out;
+}
+.input-hint.show {
+    max-height: 2rem;
+    opacity: 1;
+    margin-top: 0.4rem;
+}
+.input-hint.error { color: #d8000c; }
+.input-hint.success { color: #4f8a10; }
+
+.password-checklist {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    font-size: 0.9em;
+    padding: 0 1em;
+    transition: max-height 300ms ease-out, opacity 250ms ease-out, padding 300ms ease-out, margin-top 300ms ease-out;
+}
+.password-checklist.show {
+    max-height: 10rem;
+    opacity: 1;
+    padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+    background: #f9f9f9;
+    border-radius: 6px;
+}
+.password-checklist .check-item {
+    color: #d8000c;
+    padding: 0.1rem 0;
+    transition: color 0.2s;
+}
+.password-checklist .check-item.valid {
+    color: #4f8a10;
+}
+
 @media (max-width: 500px) {
-    .container { padding: 1.2rem 0.5rem; }
+    .container { padding: 1.5rem 1rem; }
 }
