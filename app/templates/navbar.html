@@ -1,0 +1,53 @@
+<aside id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+        <div class="logo"><h2>FinanceTracker</h2></div>
+        <button id="sidebar-toggle" class="sidebar-toggle" title="Toggle Menu">
+            <span class="hamburger"></span>
+        </button>
+    </div>
+
+    <div class="user-profile">
+        <div class="user-avatar">
+            {{ full_name[0]|upper }}{{ full_name.split(' ')[-1][0]|upper }}
+        </div>
+        <div class="user-info">
+            <h4>{{ full_name }}</h4>
+            <p>{{ email }}</p>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <button type="button" class="nav-link active" onclick="window.location='{{ url_for('dashboard') }}'">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="nav-link" onclick="window.location='{{ url_for('importdata') }}'">
+                    <span class="nav-icon">🗂️</span>
+                    <span class="nav-text">Import Data</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="nav-link">
+                    <span class="nav-icon">💼</span>
+                    <span class="nav-text">View Portfolio</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="nav-link">
+                    <span class="nav-icon">👤</span>
+                    <span class="nav-text">Profile</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="nav-link" onclick="window.location='{{ url_for('home_page') }}'">
+                    <span class="nav-icon">🚪</span>
+                    <span class="nav-text">Logout</span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+</aside>

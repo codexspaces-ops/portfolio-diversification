@@ -1,0 +1,36 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}" />
+    <link rel="stylesheet" href="" />
+    <script src="{{ url_for('static', filename='js/navbar.js') }}" defer></script>
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+    <main class="content">
+        <header class="content-header">
+            <h1>Import Your Data</h1>
+        </header>
+        <section class="import-section">
+            <h3> Select your Broker to Import Data </h3>
+            <label for="broker-select" style="font-weight: 500; margin-right: 10px">Select Broker:</label>
+            <select id="broker-select" name="broker"
+                style="padding: 8px 16px; border-radius: 6px; border: 1px solid #ccc">
+                <option value="" disabled selected>Select</option>
+                <option value="zerodha">Zerodha</option>
+                <option value="groww">Groww</option>
+                <option value="angelone">AngelOne</option>
+            </select>
+        </section>
+    </main>
+
+    <script src="" async defer></script>
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+.content {
+    margin-left: 150px; /* Same as sidebar width */
+    /* transition: margin-left 250ms cubic-bezier(0.16, 1, 0.3, 1); */
+}
+.content-header {
+    margin-left: 150px;
+}
+
+h3{
+    font-size: 32px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: rgba(19, 52, 59, 1);
+    text-align: left;
+    margin-left: 100px;
+}

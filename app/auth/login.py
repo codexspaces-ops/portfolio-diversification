@@ -31,32 +31,39 @@ def login(users_collection):
         })
 
         if user and check_password_hash(user['password'], password):
+            # Store user info in session
             session['user'] = user['email']
+            session['full_name'] = user.get('full_name', user.get('username'))
+            session['email'] = user.get('email')
+
             users_collection.update_one(
                 {"_id": user["_id"]},
                 {"$set": {"last_login": datetime.utcnow()}}
             )
-            
+
             if request.is_json:
                 return jsonify({"message": "Login successful!"}), 200
-            
+
             flash("Login successful!", "success")
             return redirect(url_for('login.dashboard'))
         else:
             if request.is_json:
                 return jsonify({"error": "Invalid username/email or password"}), 401
-            
+
             flash("Invalid username/email or password", "danger")
             return render_template('login.html')
 
+    # Render login page on GET requests
     return render_template('login.html')
+
 
 @login_bp.route('/dashboard')
 def dashboard(users_collection):
     if 'user' not in session:
         flash("Please log in first.", "warning")
         return redirect(url_for('login.login'))
-    
+
     user = users_collection.find_one({"email": session['user']})
     full_name = user.get("full_name", user.get("username", "User")) if user else "User"
-    return f"Welcome {full_name}!"
+    email = user.get("email", "user@example.com") if user else "user@example.com"   
+    return render_template('dashboard.html', full_name=full_name, email=email)

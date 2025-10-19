@@ -1,91 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login / Signup</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/login.css') }}"
+    />
+  </head>
+  <body>
     <div class="container">
-        <div class="toggle-btns">
-            <button id="loginTab" class="active" type="button">Login</button>
-            <button id="signupTab" type="button">Signup</button>
-        </div>
-        <div class="messages">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            <ul>
-              {% for category, message in messages %}
-                <li class="{{ category }}">{{ message }}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-        {% endwith %}
-        </div>
+      <div class="toggle-btns">
+        <button id="loginTab" class="active" type="button">Login</button>
+        <button id="signupTab" type="button">Signup</button>
+      </div>
+      <div class="messages">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+        <ul>
+          {% for category, message in messages %}
+          <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+      </div>
 
-        <form id="loginForm" method="POST" action="{{ url_for('login.login') }}">
-            <h2>Login</h2>
-            <div class="form-field">
-                <input type="text" name="identifier" placeholder="Username or Email" required autocomplete="username">
-            </div>
-            <div class="form-field">
-                <input type="password" name="password" placeholder="Password" required autocomplete="current-password">
-            </div>
-            <button type="submit">Login</button>
-        </form>
+      <form id="loginForm" method="POST" action="{{ url_for('login.login') }}">
+        <h2>Login</h2>
+        <div class="form-field">
+          <input
+            type="text"
+            name="identifier"
+            placeholder="Username or Email"
+            required
+            autocomplete="username"
+          />
+        </div>
+        <div class="form-field">
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+            autocomplete="current-password"
+          />
+        </div>
+        <button type="submit">Login</button>
+      </form>
 
-        <form id="signupForm" class="is-hidden" method="POST" action="{{ url_for('signup.signup') }}" autocomplete="off">
-            <h2>Signup</h2>
-            <div class="form-field">
-                <input type="text" name="full_name" placeholder="Full Name" required autocomplete="name">
-            </div>
-            <div class="form-field">
-                <input
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    required
-                    autocomplete="username"
-                    id="signupUsername"
-                    data-check-url="{{ url_for('signup.check_username') }}"
-                    aria-describedby="usernameStatus"
-                >
-                <span id="usernameStatus" class="input-hint" aria-live="polite"></span>
-            </div>
-            <div class="form-field">
-                <input
-                    type="email"
-                    name="email"
-                    id="signupEmail"
-                    placeholder="Email"
-                    required
-                    autocomplete="email"
-                    aria-describedby="emailError"
-                >
-                <span id="emailError" class="input-hint" aria-live="polite"></span>
-            </div>
-            <div class="form-field">
-                <input
-                    type="password"
-                    name="password"
-                    id="signupPassword"
-                    placeholder="Password"
-                    required
-                    autocomplete="new-password"
-                    aria-describedby="passwordChecklist"
-                >
-                <div id="passwordChecklist" class="password-checklist" aria-live="polite">
-                    <div id="length" class="check-item">✗ At least 8 characters</div>
-                    <div id="upper" class="check-item">✗ Uppercase letter</div>
-                    <div id="lower" class="check-item">✗ Lowercase letter</div>
-                    <div id="number" class="check-item">✗ Number</div>
-                    <div id="special" class="check-item">✗ Special character</div>
-                </div>
-            </div>
-            <button type="submit">Signup</button>
-        </form>
+      <form
+        id="signupForm"
+        class="is-hidden"
+        method="POST"
+        action="{{ url_for('signup.signup') }}"
+        autocomplete="off"
+      >
+        <h2>Signup</h2>
+        <div class="form-field">
+          <input
+            type="text"
+            name="full_name"
+            placeholder="Full Name"
+            required
+            autocomplete="name"
+          />
+        </div>
+        <div class="form-field">
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            required
+            autocomplete="username"
+            id="signupUsername"
+            data-check-url="{{ url_for('signup.check_username') }}"
+            aria-describedby="usernameStatus"
+          />
+          <span
+            id="usernameStatus"
+            class="input-hint"
+            aria-live="polite"
+          ></span>
+        </div>
+        <div class="form-field">
+          <input
+            type="email"
+            name="email"
+            id="signupEmail"
+            placeholder="Email"
+            required
+            autocomplete="email"
+            aria-describedby="emailError"
+          />
+          <span id="emailError" class="input-hint" aria-live="polite"></span>
+        </div>
+        <div class="form-field">
+          <input
+            type="password"
+            name="password"
+            id="signupPassword"
+            placeholder="Password"
+            required
+            autocomplete="new-password"
+            aria-describedby="passwordChecklist"
+          />
+          <div
+            id="passwordChecklist"
+            class="password-checklist"
+            aria-live="polite"
+          >
+            <div id="length" class="check-item">✗ At least 8 characters</div>
+            <div id="upper" class="check-item">✗ Uppercase letter</div>
+            <div id="lower" class="check-item">✗ Lowercase letter</div>
+            <div id="number" class="check-item">✗ Number</div>
+            <div id="special" class="check-item">✗ Special character</div>
+          </div>
+        </div>
+        <button type="submit">Signup</button>
+      </form>
     </div>
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>
-</body>
+  </body>
 </html>
