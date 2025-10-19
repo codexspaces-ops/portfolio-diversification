@@ -12,19 +12,20 @@
             <button id="loginTab" class="active" type="button">Login</button>
             <button id="signupTab" type="button">Signup</button>
         </div>
-        <div class="messages">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            <ul>
-              {% for category, message in messages %}
-                <li class="{{ category }}">{{ message }}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-        {% endwith %}
-        </div>
 
         <form id="loginForm" method="POST" action="{{ url_for('login.login') }}">
+            <!-- Flashed messages moved inside the form -->
+            <div class="messages">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages and not request.form.get('full_name') %} {# Only show for login errors #}
+                    <ul>
+                      {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endwith %}
+            </div>
             <h2>Login</h2>
             <div class="form-field">
                 <input type="text" name="identifier" placeholder="Username or Email" required autocomplete="username">
@@ -32,10 +33,22 @@
             <div class="form-field">
                 <input type="password" name="password" placeholder="Password" required autocomplete="current-password">
             </div>
-            <button type="submit">Login</button>
+            <button type="submit" disabled>Login</button>
         </form>
 
         <form id="signupForm" class="is-hidden" method="POST" action="{{ url_for('signup.signup') }}" autocomplete="off">
+            <!-- Flashed messages for signup moved inside this form -->
+            <div class="messages">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages and request.form.get('full_name') %} {# Only show for signup errors #}
+                    <ul>
+                      {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                {% endwith %}
+            </div>
             <h2>Signup</h2>
             <div class="form-field">
                 <input type="text" name="full_name" placeholder="Full Name" required autocomplete="name">
@@ -62,6 +75,7 @@
                     required
                     autocomplete="email"
                     aria-describedby="emailError"
+                    data-check-url="{{ url_for('signup.check_email') }}"
                 >
                 <span id="emailError" class="input-hint" aria-live="polite"></span>
             </div>
@@ -83,7 +97,7 @@
                     <div id="special" class="check-item">✗ Special character</div>
                 </div>
             </div>
-            <button type="submit">Signup</button>
+            <button type="submit" disabled>Signup</button>
         </form>
     </div>
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>

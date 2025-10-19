@@ -85,6 +85,11 @@ button[type="submit"]:hover {
     background: linear-gradient(90deg, #fda085 0%, #f6d365 100%);
     box-shadow: 0 4px 16px rgba(253, 160, 133, 0.15);
 }
+button[type="submit"]:disabled {
+    background: #e0e0e0; /* A grey background to show it's disabled */
+    cursor: not-allowed; /* Change the cursor to indicate it's not clickable */
+    box-shadow: none;
+}
 .messages {
     margin-bottom: 1.2rem;
 }
