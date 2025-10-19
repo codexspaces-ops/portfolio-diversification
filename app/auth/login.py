@@ -7,7 +7,9 @@ login_bp = Blueprint('login', __name__)
 @login_bp.route('/login', methods=['GET', 'POST'])
 def login(users_collection):
     if request.method == 'POST':
-        if request.is_json:
+        is_json_request = request.is_json
+        
+        if is_json_request:
             data = request.get_json()
             if not data:
                 return jsonify({"error": "Request must be a valid JSON."}), 400
@@ -18,11 +20,12 @@ def login(users_collection):
             password = request.form.get('password')
 
         if not identifier or not password:
-            if request.is_json:
+            if is_json_request:
                 return jsonify({"error": "Username/Email and password are required"}), 400
             flash("Username/Email and password are required", "danger")
             return render_template('login.html')
 
+        # Find user by email or username
         user = users_collection.find_one({
             "$or": [
                 {"email": identifier},
@@ -30,24 +33,32 @@ def login(users_collection):
             ]
         })
 
-        if user and check_password_hash(user['password'], password):
-            session['user'] = user['email']
-            users_collection.update_one(
-                {"_id": user["_id"]},
-                {"$set": {"last_login": datetime.utcnow()}}
-            )
-            
-            if request.is_json:
-                return jsonify({"message": "Login successful!"}), 200
-            
-            flash("Login successful!", "success")
-            return redirect(url_for('login.dashboard'))
-        else:
-            if request.is_json:
-                return jsonify({"error": "Invalid username/email or password"}), 401
-            
-            flash("Invalid username/email or password", "danger")
+        # Case 1: User does not exist
+        if not user:
+            if is_json_request:
+                return jsonify({"error": "User does not exist."}), 404
+            flash("User does not exist. Please check your username/email or sign up.", "danger")
             return render_template('login.html')
+
+        # Case 2: User exists, but password is incorrect
+        if not check_password_hash(user['password'], password):
+            if is_json_request:
+                return jsonify({"error": "Incorrect password."}), 401
+            flash("Incorrect password. Please try again.", "danger")
+            return render_template('login.html')
+
+        # Case 3: Login successful
+        session['user'] = user['email']
+        users_collection.update_one(
+            {"_id": user["_id"]},
+            {"$set": {"last_login": datetime.utcnow()}}
+        )
+        
+        if is_json_request:
+            return jsonify({"message": "Login successful!"}), 200
+        
+        flash("Login successful!", "success")
+        return redirect(url_for('login.dashboard'))
 
     return render_template('login.html')
 

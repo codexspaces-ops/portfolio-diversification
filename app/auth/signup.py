@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from werkzeug.security import generate_password_hash
 from datetime import datetime
+import re
 
 signup_bp = Blueprint('signup', __name__)
 
@@ -76,3 +77,16 @@ def check_username(users_collection):
     username = request.json.get('username', '').strip()
     exists = bool(username) and users_collection.find_one({"username": username}) is not None
     return jsonify({"available": bool(username) and not exists})
+
+@signup_bp.route('/check_email', methods=['POST'])
+def check_email(users_collection):
+    email = request.json.get('email', '').strip()
+    if not email:
+        return jsonify({"available": False, "error": "Email is required."})
+    
+    # A simple regex to ensure we don't query the DB with invalid formats
+    if not re.match(r"^[^\s@]+@[^\s@]+\.[^\s@]+$", email):
+        return jsonify({"available": False, "error": "Invalid email format."})
+
+    exists = users_collection.find_one({"email": email}) is not None
+    return jsonify({"available": not exists})
