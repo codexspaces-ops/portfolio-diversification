@@ -32,5 +32,9 @@ def importdata():
         return redirect(url_for('login.login'))
     return render_template('importdata.html',full_name=session.get('full_name'))
 
+@app.route('/profile')
+def profile():
+    return render_template('profile.html',full_name=session.get('full_name'))
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,port=3000)

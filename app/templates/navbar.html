@@ -19,13 +19,17 @@
     <nav class="sidebar-nav">
         <ul class="nav-menu">
             <li class="nav-item">
-                <button type="button" class="nav-link active" onclick="window.location='{{ url_for('dashboard') }}'">
+                <button type="button" 
+                class="nav-link {{ 'active' if request.path == url_for('dashboard') else '' }}" 
+                onclick="window.location='{{ url_for('dashboard') }}'">
                     <span class="nav-icon">📊</span>
                     <span class="nav-text">Dashboard</span>
                 </button>
             </li>
             <li class="nav-item">
-                <button type="button" class="nav-link" onclick="window.location='{{ url_for('importdata') }}'">
+                <button type="button" 
+                class="nav-link {{ 'active' if request.path == url_for('importdata') else '' }}" 
+                onclick="window.location='{{ url_for('importdata') }}'">
                     <span class="nav-icon">🗂️</span>
                     <span class="nav-text">Import Data</span>
                 </button>
@@ -37,7 +41,7 @@
                 </button>
             </li>
             <li class="nav-item">
-                <button type="button" class="nav-link">
+                <button type="button" class="nav-link {{ 'active' if request.path == url_for('profile') else '' }}">
                     <span class="nav-icon">👤</span>
                     <span class="nav-text">Profile</span>
                 </button>
