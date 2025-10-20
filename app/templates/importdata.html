@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -18,7 +19,7 @@
             <h1>Import Your Data</h1>
         </header>
         <section class="import-section">
-            <h3> Select your Broker to Import Data </h3>
+            <h3>Select your Broker to Import Data</h3>
             <label for="broker-select" style="font-weight: 500; margin-right: 10px">Select Broker:</label>
             <select id="broker-select" name="broker"
                 style="padding: 8px 16px; border-radius: 6px; border: 1px solid #ccc">
@@ -39,6 +40,23 @@
                 </button>
             </form>
         </section>
+        <!-- Instructions Section -->
+<div id="instructions">
+    <div id="zerodha-instructions" class="broker-instructions" style="display:none;">
+        <h4>Zerodha Instructions</h4>
+        <p>Download your tradebook from Zerodha Console → Reports → Tradebook → Export CSV.</p>
+    </div>
+
+    <div id="groww-instructions" class="broker-instructions" style="display:none;">
+        <h4>Groww Instructions</h4>
+        <p>Go to Groww Dashboard → Reports → All Transactions → Download CSV.</p>
+    </div>
+
+    <div id="angelone-instructions" class="broker-instructions" style="display:none;">
+        <h4>AngelOne Instructions</h4>
+        <p>Open AngelOne SmartAPI → Reports → Trade History → Export CSV file.</p>
+    </div>
+</div>
     </main>
 
     <script src="" async defer></script>
