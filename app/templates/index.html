@@ -5,18 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <!-- Prevent caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 </head>
 <body>
-    <header></header>
+    <header>
         <nav>
             <ul>
                 <li><a href="{{ url_for('home_page') }}">Home</a></li>
+                {% if not session.get('user') %}
                 <li><a href="{{ url_for('login') }}">Login</a></li>
+                {% else %}
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>
-    <h1>Welcome</h1>
 
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    <main>
+        <h1>Welcome</h1>
+    </main>
+
+    <script>
+      (function () {
+        const sessionEndpoint = "{{ url_for('session_status') }}";
+        const dashboardUrl = "{{ url_for('dashboard') }}";
+
+        // If user is logged in, redirect to dashboard
+        fetch(sessionEndpoint, { cache: 'no-store' })
+          .then(r => r.ok ? r.json() : Promise.reject())
+          .then(data => {
+            if (data.logged_in) {
+              window.location.replace(dashboardUrl);
+            }
+          })
+          .catch(() => {});
+        
+        // Enforce on back/forward cache
+        window.addEventListener('pageshow', (event) => {
+          if (event.persisted) {
+            fetch(sessionEndpoint, { cache: 'no-store' })
+              .then(r => r.ok ? r.json() : Promise.reject())
+              .then(data => {
+                if (data.logged_in) window.location.replace(dashboardUrl);
+              });
+          }
+        });
+      })();
+    </script>
 </body>
 </html>

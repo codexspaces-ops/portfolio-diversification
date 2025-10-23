@@ -20,16 +20,16 @@
         <ul class="nav-menu">
             <li class="nav-item">
                 <button type="button" 
-                class="nav-link {{ 'active' if request.path == url_for('dashboard') else '' }}" 
-                onclick="window.location='{{ url_for('dashboard') }}'">
+                        class="nav-link {{ 'active' if request.path == url_for('dashboard') else '' }}" 
+                        onclick="window.location='{{ url_for('dashboard') }}'">
                     <span class="nav-icon">📊</span>
                     <span class="nav-text">Dashboard</span>
                 </button>
             </li>
             <li class="nav-item">
                 <button type="button" 
-                class="nav-link {{ 'active' if request.path == url_for('importdata') else '' }}" 
-                onclick="window.location='{{ url_for('importdata') }}'">
+                        class="nav-link {{ 'active' if request.path == url_for('importdata') else '' }}" 
+                        onclick="window.location='{{ url_for('importdata') }}'">
                     <span class="nav-icon">🗂️</span>
                     <span class="nav-text">Import Data</span>
                 </button>
@@ -41,13 +41,15 @@
                 </button>
             </li>
             <li class="nav-item">
-                <button type="button" class="nav-link {{ 'active' if request.path == url_for('profile') else '' }}">
+                <button type="button" 
+                        class="nav-link {{ 'active' if request.path == url_for('profile') else '' }}" 
+                        onclick="window.location='{{ url_for('profile') }}'">
                     <span class="nav-icon">👤</span>
                     <span class="nav-text">Profile</span>
                 </button>
             </li>
             <li class="nav-item">
-                <button type="button" class="nav-link" onclick="window.location='{{ url_for('home_page') }}'">
+                <button type="button" class="nav-link" onclick="handleLogout()">
                     <span class="nav-icon">🚪</span>
                     <span class="nav-text">Logout</span>
                 </button>
@@ -55,3 +57,34 @@
         </ul>
     </nav>
 </aside>
+
+<script>
+(function () {
+    const loginUrl = "{{ url_for('login') }}";
+    const sessionEndpoint = "{{ url_for('session_status') }}";
+
+    function enforceSession() {
+        fetch(sessionEndpoint, { cache: 'no-store' })
+            .then(r => r.ok ? r.json() : Promise.reject())
+            .then(data => {
+                if (!data.logged_in) {
+                    window.location.replace(loginUrl);
+                }
+            })
+            .catch(() => window.location.replace(loginUrl));
+    }
+
+    // Run on load and when user navigates via back button
+    enforceSession();
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) enforceSession();
+    });
+
+    // Logout button
+    window.handleLogout = function() {
+        fetch("{{ url_for('logout') }}", { method: 'GET', cache: 'no-store' })
+            .finally(() => window.location.replace(loginUrl));
+    };
+})();
+
+</script>

@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login / Signup</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/login.css') }}"
-    />
-  </head>
-  <body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
+    <!-- Prevent browser caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+</head>
+<body>
     <div class="container">
         <div class="toggle-btns">
             <button id="loginTab" class="active" type="button">Login</button>
             <button id="signupTab" type="button">Signup</button>
         </div>
 
+        <!-- LOGIN FORM -->
         <form id="loginForm" method="POST" action="{{ url_for('login.login') }}">
-            <!-- Flashed messages moved inside the form -->
             <div class="messages">
                 {% with messages = get_flashed_messages(with_categories=true) %}
-                  {% if messages and not request.form.get('full_name') %} {# Only show for login errors #}
+                  {% if messages and not request.form.get('full_name') %}
                     <ul>
                       {% for category, message in messages %}
                         <li class="{{ category }}">{{ message }}</li>
@@ -36,14 +37,14 @@
             <div class="form-field">
                 <input type="password" name="password" placeholder="Password" required autocomplete="current-password">
             </div>
-            <button type="submit" disabled>Login</button>
+            <button type="submit">Login</button>
         </form>
 
+        <!-- SIGNUP FORM -->
         <form id="signupForm" class="is-hidden" method="POST" action="{{ url_for('signup.signup') }}" autocomplete="off">
-            <!-- Flashed messages for signup moved inside this form -->
             <div class="messages">
                 {% with messages = get_flashed_messages(with_categories=true) %}
-                  {% if messages and request.form.get('full_name') %} {# Only show for signup errors #}
+                  {% if messages and request.form.get('full_name') %}
                     <ul>
                       {% for category, message in messages %}
                         <li class="{{ category }}">{{ message }}</li>
@@ -57,41 +58,19 @@
                 <input type="text" name="full_name" placeholder="Full Name" required autocomplete="name">
             </div>
             <div class="form-field">
-                <input
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    required
-                    autocomplete="username"
-                    id="signupUsername"
-                    data-check-url="{{ url_for('signup.check_username') }}"
-                    aria-describedby="usernameStatus"
-                >
+                <input type="text" name="username" placeholder="Username" required autocomplete="username"
+                       id="signupUsername" data-check-url="{{ url_for('signup.check_username') }}"
+                       aria-describedby="usernameStatus">
                 <span id="usernameStatus" class="input-hint" aria-live="polite"></span>
             </div>
             <div class="form-field">
-                <input
-                    type="email"
-                    name="email"
-                    id="signupEmail"
-                    placeholder="Email"
-                    required
-                    autocomplete="email"
-                    aria-describedby="emailError"
-                    data-check-url="{{ url_for('signup.check_email') }}"
-                >
+                <input type="email" name="email" id="signupEmail" placeholder="Email" required autocomplete="email"
+                       data-check-url="{{ url_for('signup.check_email') }}" aria-describedby="emailError">
                 <span id="emailError" class="input-hint" aria-live="polite"></span>
             </div>
             <div class="form-field">
-                <input
-                    type="password"
-                    name="password"
-                    id="signupPassword"
-                    placeholder="Password"
-                    required
-                    autocomplete="new-password"
-                    aria-describedby="passwordChecklist"
-                >
+                <input type="password" name="password" id="signupPassword" placeholder="Password" required autocomplete="new-password"
+                       aria-describedby="passwordChecklist">
                 <div id="passwordChecklist" class="password-checklist" aria-live="polite">
                     <div id="length" class="check-item">✗ At least 8 characters</div>
                     <div id="upper" class="check-item">✗ Uppercase letter</div>
@@ -100,9 +79,31 @@
                     <div id="special" class="check-item">✗ Special character</div>
                 </div>
             </div>
-            <button type="submit" disabled>Signup</button>
+            <button type="submit">Signup</button>
         </form>
     </div>
+
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>
-  </body>
+    <script>
+      (function () {
+        const loginUrl = "{{ url_for('login') }}";
+        const sessionEndpoint = "{{ url_for('session_status') }}";
+
+        // Prevent accessing login/signup pages if already logged in
+        function enforceSession() {
+          fetch(sessionEndpoint, { cache: 'no-store' })
+            .then(r => r.ok ? r.json() : Promise.reject())
+            .then(data => {
+              if (data.logged_in) window.location.replace("{{ url_for('dashboard') }}");
+            })
+            .catch(() => {});
+        }
+
+        enforceSession();
+        window.addEventListener('pageshow', (event) => {
+          if (event.persisted) enforceSession();
+        });
+      })();
+    </script>
+</body>
 </html>
