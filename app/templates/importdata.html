@@ -34,8 +34,8 @@
         </section>
         <section class="upload-section" style="margin-top: 30px;">
             <h3> Upload your file </h3>
-            <form action="/importdata" method="post" enctype="multipart/form-data">
-                <input type="file" name="datafile" accept=".csv"
+            <form action="{{ url_for('importdata') }}" method="post" enctype="multipart/form-data">
+                <input type="file" name="datafile" accept="*/*" required
                     style="padding: 8px 16px; border-radius: 6px; border: 1px solid #ccc" required />
                 <button type="submit"
                     style="padding: 8px 16px; border-radius: 6px; border: none; background-color: #4CAF50; color: white; cursor: pointer; margin-left: 10px;">

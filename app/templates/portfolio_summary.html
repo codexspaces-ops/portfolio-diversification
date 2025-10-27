@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Portfolio Diversification</title>
+</head>
+<body>
+    <h2>Portfolio Diversification Summary</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Sector</th>
+                <th>Total Value</th>
+                <th>Allocation (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in tables %}
+            <tr>
+                <td>{{ row.keys()|list()[0] }}</td>
+                <td>{{ row.values()|list()[1] }}</td>
+                <td>{{ row.values()|list()[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <a href="{{ url_for('importdata') }}">⬅️ Upload another file</a>
+</body>
+</html>
