@@ -170,7 +170,7 @@ def importdata():
 def profile():
     if 'user' not in session:
         return redirect(url_for('login.login'))
-    return render_template('profile.html', full_name=session.get('full_name'))
+    return render_template('profile.html', user=session.get('full_name'))
 
 @app.route('/session')
 def session_status():

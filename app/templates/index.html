@@ -9,6 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
+    <script src="{{ url_for('static', filename='js/cache.js') }}" ></script>
 </head>
 <body>
     <header>
@@ -28,33 +29,5 @@
     <main>
         <h1>Welcome</h1>
     </main>
-
-    <script>
-      (function () {
-        const sessionEndpoint = "{{ url_for('session_status') }}";
-        const dashboardUrl = "{{ url_for('dashboard') }}";
-
-        // If user is logged in, redirect to dashboard
-        fetch(sessionEndpoint, { cache: 'no-store' })
-          .then(r => r.ok ? r.json() : Promise.reject())
-          .then(data => {
-            if (data.logged_in) {
-              window.location.replace(dashboardUrl);
-            }
-          })
-          .catch(() => {});
-        
-        // Enforce on back/forward cache
-        window.addEventListener('pageshow', (event) => {
-          if (event.persisted) {
-            fetch(sessionEndpoint, { cache: 'no-store' })
-              .then(r => r.ok ? r.json() : Promise.reject())
-              .then(data => {
-                if (data.logged_in) window.location.replace(dashboardUrl);
-              });
-          }
-        });
-      })();
-    </script>
 </body>
 </html>

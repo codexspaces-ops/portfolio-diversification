@@ -9,6 +9,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
+    <script src="{{ url_for('static', filename='js/cache.js') }}" ></script>
 </head>
 <body>
     <div class="container">
@@ -82,28 +83,5 @@
             <button type="submit">Signup</button>
         </form>
     </div>
-
-    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
-    <script>
-      (function () {
-        const loginUrl = "{{ url_for('login') }}";
-        const sessionEndpoint = "{{ url_for('session_status') }}";
-
-        // Prevent accessing login/signup pages if already logged in
-        function enforceSession() {
-          fetch(sessionEndpoint, { cache: 'no-store' })
-            .then(r => r.ok ? r.json() : Promise.reject())
-            .then(data => {
-              if (data.logged_in) window.location.replace("{{ url_for('dashboard') }}");
-            })
-            .catch(() => {});
-        }
-
-        enforceSession();
-        window.addEventListener('pageshow', (event) => {
-          if (event.persisted) enforceSession();
-        });
-      })();
-    </script>
 </body>
 </html>
